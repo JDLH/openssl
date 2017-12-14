@@ -229,12 +229,16 @@ set multiple options. See the L<x509(1)> manual page for details.
 
 The directory to use for server certificate verification. This directory
 must be in "hash format", see B<verify> for more information. These are
-also used when building the client certificate chain.
+also used when building the client certificate chain. 
+Note that OpenSSL will also load trusted CA certificates from the default
+file location: see B<-no-CAfile>.
 
 =item B<-CAfile file>
 
 A file containing trusted certificates to use during server authentication
 and to use when attempting to build the client certificate chain.
+Note that OpenSSL will also load trusted CA certificates from the default
+directory location: see B<-no-CApath>.
 
 =item B<-no-CAfile>
 
@@ -324,8 +328,10 @@ be used as a test that session caching is working.
 
 =item B<-showcerts>
 
-Display the whole server certificate chain: normally only the server
-certificate itself is displayed.
+Display the certificate chain as sent by the server. This usually includes the 
+certificates of issuer(s). It probably will not include the root CA certificate, 
+because the server is normally configured to not send that. 
+Without this option, only the server certificate itself is displayed. 
 
 =item B<-prexit>
 
@@ -671,7 +677,7 @@ a client certificate. Therefor merely including a client certificate
 on the command line is no guarantee that the certificate works.
 
 If there are problems verifying a server certificate then the
-B<-showcerts> option can be used to show the whole chain.
+B<-showcerts> option can be used to show the chain sent by the server.
 
 The B<s_client> utility is a test tool and is designed to continue the
 handshake after any certificate verification errors. As a result it will
